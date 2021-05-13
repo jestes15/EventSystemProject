@@ -19,10 +19,17 @@ Event::operator+=(const eveSub& subscriber) {
 
 bool
 Event::operator-=(const eveSub& subscriber) {
-	int location = 0;
+	int location = -1;
 	for (int i = 0; i < subscribers.size(); i++) {
 		if (subscribers[i] == subscriber)
 			location = i;
 	}
+	if (location == -1) {
+		return false;
+	}
+	if (location == -1) {
+		return false;
+	}
 	subscribers.erase(subscribers.begin() + location);
+	return true;
 }
