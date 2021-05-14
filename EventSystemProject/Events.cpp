@@ -2,7 +2,10 @@
 
 void
 Event::raise(std::any sender = nullptr, std::any args = nullptr) {
-
+	std::thread th([](std::vector<eveSub>& subscribers, std::any sender, std::any args){
+		for (int i = 0; i < subscribers.size(); i++) {
+			subscribers[i](sender, args);
+		}});
 }
 
 void
@@ -14,22 +17,17 @@ Event::raiseSync(std::any sender = nullptr, std::any args = nullptr) {
 
 void
 Event::operator+=(const eveSub& subscriber) {
+	if (std::find(subscribers.begin(), subscribers.end(), subscriber) != subscribers.end()) return;
 	subscribers.push_back(subscriber);
 }
 
 bool
 Event::operator-=(const eveSub& subscriber) {
-	int location = -1;
-	for (int i = 0; i < subscribers.size(); i++) {
-		if (subscribers[i] == subscriber)
-			location = i;
+	auto it = std::find(subscribers.begin(), subscribers.end(), subscriber);
+	if (it != subscribers.end()) {
+		int index = it - subscribers.begin();
+		subscribers.erase(subscribers.begin() + index);
+		return true;
 	}
-	if (location == -1) {
-		return false;
-	}
-	if (location == -1) {
-		return false;
-	}
-	subscribers.erase(subscribers.begin() + location);
-	return true;
+	return false;
 }

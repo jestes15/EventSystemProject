@@ -2,9 +2,8 @@
 #include <any>
 #include <vector>
 #include <thread>
-
 #ifndef EVENTS
-#define EVENTS
+#define EVENTS 
 
 //Event Subscriber, a function pointer to a function with two arguments, sender and args
 typedef void (*eveSub)(std::any, std::any);
